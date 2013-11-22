@@ -6,7 +6,7 @@
     </list>
     <ignored path="trello.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="1dc52308-b79c-4989-8880-c3caacb287e4" time="1385157528973" ignored="false" />
+    <file path="/Dummy.txt" changelist="1dc52308-b79c-4989-8880-c3caacb287e4" time="1385159626438" ignored="false" />
     <file path="/AppServiceTest.java" changelist="1dc52308-b79c-4989-8880-c3caacb287e4" time="1385154675617" ignored="false" />
     <file path="/TrelloServiceImpl.java" changelist="1dc52308-b79c-4989-8880-c3caacb287e4" time="1385156359925" ignored="false" />
     <file path="/TrelloServiceTest.java" changelist="1dc52308-b79c-4989-8880-c3caacb287e4" time="1385157439090" ignored="false" />
@@ -658,7 +658,11 @@
       <created>1385157534266</created>
       <updated>1385157534266</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="checkpoint: tests pass, runs from command line">
+      <created>1385159628184</created>
+      <updated>1385159628184</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -729,7 +733,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored trelloServiceTest" />
+    <option name="LAST_COMMIT_MESSAGE" value="checkpoint: tests pass, runs from command line" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -745,6 +749,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="got project to compile and run all tests" />
     <MESSAGE value="refactored trelloServiceTest" />
+    <MESSAGE value="checkpoint: tests pass, runs from command line" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
