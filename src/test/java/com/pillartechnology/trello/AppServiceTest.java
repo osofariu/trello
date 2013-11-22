@@ -1,12 +1,8 @@
 package com.pillartechnology.trello;
 
-import org.junit.After;
 import org.junit.Test;
-
 import java.io.File;
-import java.io.FileWriter;
 import java.io.PrintWriter;
-
 import static org.mockito.Mockito.*;
 
 public class AppServiceTest {

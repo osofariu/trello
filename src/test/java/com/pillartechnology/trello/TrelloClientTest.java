@@ -1,13 +1,14 @@
 package com.pillartechnology.trello;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class TrelloClientTest {
 

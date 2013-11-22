@@ -35,7 +35,7 @@ public class TrelloServiceTest {
         setInitFileToEmpty();
         try {
             TrelloServiceImpl trelloService = new TrelloServiceImpl();
-            fail("Should have gotten a Runtime Exception");
+            fail("Should have gotten an exception");
         } catch (InitializationException rte) {}
         restoreInitFile();
     }
