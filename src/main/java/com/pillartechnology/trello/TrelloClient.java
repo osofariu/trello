@@ -11,7 +11,7 @@ public class TrelloClient {
     private PrintStream out;
 
     public static void main(String[] args) {
-        TrelloService trelloService = new TrelloServiceImpl();
+        TrelloService trelloService = new TrelloServiceImpl("/Users/ovi/.trello");
         AppService appService = new AppServiceImpl(trelloService);
         TrelloClient client = new TrelloClient(appService, System.out);
         client.run(args);

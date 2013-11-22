@@ -20,12 +20,12 @@ public class TrelloServiceImpl implements TrelloService {
     private static String appKey;
     private static String userToken;
 
-    public TrelloServiceImpl() {
-        initializeCredentials();
+    public TrelloServiceImpl(String initFile) {
+        initializeCredentials(initFile);
     }
 
-    private void initializeCredentials() {
-        File trelloCredentials = new File(TRELLO_INIT_FILE);
+    private void initializeCredentials(String initFile) {
+        File trelloCredentials = new File(initFile);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(trelloCredentials));
             String line;
