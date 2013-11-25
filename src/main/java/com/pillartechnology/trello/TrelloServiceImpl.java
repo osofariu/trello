@@ -19,12 +19,16 @@ public class TrelloServiceImpl implements TrelloService {
     private static final String TRELLO_INIT_FILE = "/Users/ovi/.trello";
     private static String appKey;
     private static String userToken;
+    private static String initFile;
 
     public TrelloServiceImpl(String initFile) {
-        initializeCredentials(initFile);
+        this.initFile = initFile;
     }
 
-    private void initializeCredentials(String initFile) {
+    private void initializeCredentials() {
+        if (appKey != null && userToken != null) {
+            return; // already initialized
+        }
         File trelloCredentials = new File(initFile);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(trelloCredentials));
@@ -50,6 +54,7 @@ public class TrelloServiceImpl implements TrelloService {
 
     @Override
     public boolean createBoard(String boardName) throws TrelloServiceException {
+        initializeCredentials();
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", appKey);
         params.put("token", userToken);
@@ -63,6 +68,7 @@ public class TrelloServiceImpl implements TrelloService {
 
     @Override
     public boolean addTask(String boardName, String taskName) throws TrelloServiceException {
+        initializeCredentials();
         String boardId = getIdForBoardName(boardName);
         if (boardId == null) {
             throw new BoardNotFoundException("Name given: " + boardName);
@@ -81,6 +87,7 @@ public class TrelloServiceImpl implements TrelloService {
     }
 
     public String getIdForBoardName(String myBoardName) {
+        initializeCredentials();
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", appKey);
         params.put("token", userToken);
@@ -89,6 +96,7 @@ public class TrelloServiceImpl implements TrelloService {
     }
 
     public String getListIdForBoardAndListName(String boardId, String desiredListName) {
+        initializeCredentials();
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", appKey);
         params.put("token", userToken);
@@ -96,11 +104,8 @@ public class TrelloServiceImpl implements TrelloService {
         return getValueForKeyInJsonList("name", desiredListName, "id", response.readEntity(String.class));
     }
 
-    // Helpers
-
-    // desired key: key of the value I am looking for
-    // desired value: value that I am looking for
-    // desired target: key for the value I am looking for
+    // find the record that has matching desiredKey and desiredValue,
+    // and return the value of the key with the named desiredTarget
     private String getValueForKeyInJsonList(String desiredKey, String desiredValue, String desiredTarget, String json) {
         Reader reader = new StringReader(json);
         JsonReader jsonReader = Json.createReader(reader);

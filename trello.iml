@@ -8,10 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.junit:com.springsource.org.junit:4.11.0" level="application" />
-    <orderEntry type="library" name="org.mockito:mockito-all:1.9.5" level="application" />
-    <orderEntry type="library" name="org.glassfish:javax.json:1.0.4" level="application" />
-    <orderEntry type="library" name="org.glassfish.jersey.core:jersey-client:2.4.1" level="application" />
+    <orderEntry type="library" exported="" name="org.junit:com.springsource.org.junit:4.11.0" level="application" />
+    <orderEntry type="library" exported="" name="org.mockito:mockito-all:1.9.5" level="application" />
+    <orderEntry type="library" exported="" name="org.glassfish:javax.json:1.0.4" level="application" />
+    <orderEntry type="library" exported="" name="org.glassfish.jersey.core:jersey-client:2.4.1" level="application" />
   </component>
 </module>
 

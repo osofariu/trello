@@ -29,7 +29,7 @@ public class TrelloClient {
         }
         File inFile = new File(args[0]);
         if (!inFile.isFile()) {
-            out.println("File not found");
+            out.println("File not found: " + inFile.toString());
             return;
         }
         try {
