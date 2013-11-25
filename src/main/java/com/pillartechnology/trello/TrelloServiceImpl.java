@@ -18,8 +18,8 @@ public class TrelloServiceImpl implements TrelloService {
     private static final String TRELLO_URL = "https://api.trello.com/1";
     private static final String TRELLO_INIT_FILE = "/Users/ovi/.trello";
     private static String appKey;
-    private static String userToken;
-    private static String initFile;
+    private String userToken;
+    private String initFile;
 
     public TrelloServiceImpl(String initFile) {
         this.initFile = initFile;

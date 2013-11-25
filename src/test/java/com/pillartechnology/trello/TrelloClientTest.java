@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -22,7 +24,7 @@ public class TrelloClientTest {
 
         client.run(new String[]{"foo.txt", "bazoo"});
 
-        assertEquals("File not found\n", buffer.toString());
+        assertThat(buffer.toString(), containsString("File not found"));
     }
 
     @Test

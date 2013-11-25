@@ -19,14 +19,16 @@ public class TrelloServiceTest {
     @Test(expected = InitializationException.class)
     public void shouldThrowExceptionWhenInitializationFileDoesNotExist() throws Exception {
         String tempInitFile = "does-not-exist";
-        new TrelloServiceImpl(tempInitFile);
+        TrelloServiceImpl trelloService = new TrelloServiceImpl(tempInitFile);
+        trelloService.createBoard("Foo");
     }
 
     @Test
     public void shouldThrowExceptionWhenAppKeyAndUserTokenAreMissing() throws Exception {
         String tempInitFile = makeTempFile();
         try {
-            new TrelloServiceImpl(tempInitFile);
+            TrelloServiceImpl trelloService = new TrelloServiceImpl(tempInitFile);
+            trelloService.createBoard("Foo");
             fail("Should have gotten an exception");
         } catch (InitializationException rte) {
             removeInitFile(tempInitFile);
