@@ -38,3 +38,10 @@ tags
 ehthumbs.db
 Thumbs.db
 *.swp
+
+# tools-related -  do not check-in
+.idea/
+.gradle/
+build/
+*.ipr
+*.iws
