@@ -1,0 +1,16 @@
+* Report by task with label
+** For a specific board (by name), for every list (column), for every task (candidate)
+*** display: list name, task (candidate) name, all labels associated with candidate.
+**** list of lists
+**** list of labels
+**** for a list, list of tasks
+**** for a task, list of all labels associated with it
+            
+* Format report a csv, and save it to a csv file
+
+** URL to get cards:
+* https://trello.com/1/boards/57bb136e69be818831fe2416?cards=open&card_fields=name,idList,idMembers,labels
+
+# /boards/57bb136e69be818831fe2416?cards=open&card_fields=name,idList,idMembers,labels&lists=open'
+
+

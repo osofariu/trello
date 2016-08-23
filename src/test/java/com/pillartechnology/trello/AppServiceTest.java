@@ -18,8 +18,7 @@ public class AppServiceTest {
         String boardName = "test board";
 
         appService.importFile(tasksFile, boardName);
-
-        verify(trelloServiceMock).createBoard(boardName);
+        verifyBoardCreated(boardName);
     }
 
     @Test
@@ -27,7 +26,6 @@ public class AppServiceTest {
         File tasksFile = createFileWithTasks("/tmp/trello.tasks", "A Task");
 
         appService.importFile(tasksFile, BOARD_NAME);
-
         verifyTasksAdded(BOARD_NAME, "A Task");
     }
 
@@ -36,7 +34,7 @@ public class AppServiceTest {
         File tasksFile = createFileWithTasks("/tmp/trello.tasks", "First Task", "Second Task");
 
         appService.importFile(tasksFile, BOARD_NAME);
-
+        verifyBoardCreated(BOARD_NAME);
         verifyTasksAdded(BOARD_NAME, "First Task", "Second Task");
     }
 
@@ -45,7 +43,7 @@ public class AppServiceTest {
         File tasksFile = createFileWithTasks("/tmp/trello.tasks","", "foo");
 
         appService.importFile(tasksFile, BOARD_NAME);
-
+        verifyBoardCreated(BOARD_NAME);
         verifyTasksAdded(BOARD_NAME, "foo");
         verifyTasksNotAdded(BOARD_NAME, "");
     }
@@ -55,7 +53,7 @@ public class AppServiceTest {
         File tasksFile = createFileWithTasks("/tmp/trello.tasks", " ", "foo", "\t", " \t");
 
         appService.importFile(tasksFile, BOARD_NAME);
-
+        verifyBoardCreated(BOARD_NAME);
         verifyTasksAdded(BOARD_NAME, "foo");
         verifyTasksNotAdded(BOARD_NAME, " ", "\t", " \t");
     }

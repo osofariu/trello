@@ -1,5 +1,6 @@
 package spikes;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,6 +27,7 @@ public class TrelloExploration {
     private static final String TOKEN = "a7967a6e18c7c707dcb4f1a13f16dfd82e3f572bb471738298fa37400428ca4b";
     private Client client = ClientBuilder.newClient();
 
+    @Ignore
     @Test
     public void shouldRetrieveAListOfBoards() {
 
@@ -49,7 +51,7 @@ public class TrelloExploration {
         }
     }
 
-
+    @Ignore
     @Test
     public void shouldCreateABoard() throws Exception {
         WebTarget createBoardWebTarget = client.target("https://api.trello.com/1")

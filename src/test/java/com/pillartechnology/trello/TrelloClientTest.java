@@ -62,10 +62,15 @@ public class TrelloClientTest {
         TrelloClient client = new TrelloClient(mockAppService, out);
         new File("/tmp/foo.txt").createNewFile();
 
-        client.run(new String[]{"/tmp/foo.txt", "bazoo"});
+        client.run(new String[]{"-import /tmp/foo.txt", "bazoo"});
 
         verify(mockAppService).importFile(new File("/tmp/foo.txt"),"bazoo");
     }
 
+//    @Test
+//    public void callsAppServiceToRetrieveTrelloLosts() throws Exception {
+//        TrelloClient client = new TrelloClient(mockAppService, out);
+//        client.run(new String[]{"-listCards"});
+//    }
 
 }

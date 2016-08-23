@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class TrelloServiceImpl implements TrelloService {
@@ -85,6 +86,7 @@ public class TrelloServiceImpl implements TrelloService {
         }
         return true;
     }
+
 
     public String getIdForBoardName(String myBoardName) {
         initializeCredentials();
