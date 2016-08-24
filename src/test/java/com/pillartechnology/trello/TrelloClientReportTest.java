@@ -17,9 +17,7 @@ public class TrelloClientReportTest {
     @Test
     public void trelloClientShouldAcceptArgsToListBoards() {
         TrelloReportClient client = new TrelloReportClient(mockAppService, out);
-        client.run(new String[]{"-listCards", "boardId"});
-
-        verify(mockAppService).getBoard("boardId");
+        client.run(new String[]{"boardId", "appKey", "token"});
+        verify(mockAppService).getBoard("boardID", "appKey", "token");
     }
-
 }

@@ -16,6 +16,6 @@ public class TrelloReportClient {
     }
 
     public void run(String[] args) {
-        trelloService.getBoard("");
+        trelloService.getBoard();
     }
 }

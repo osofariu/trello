@@ -1,28 +1,9 @@
 package com.pillartechnology.trello;
 
+import java.util.List;
+import java.util.Map;
+
 public class TrelloBoard {
-    /*id: "57bb136e69be818831fe2416",
-    name: "talent reporting project",
-    desc: "",
-    descData: null,
-    closed: false,
-    idOrganization: null,
-    pinned: false,
-    url: "https://trello.com/b/c14rnEQT/talent-reporting-project",
-    shortUrl: "https://trello.com/b/c14rnEQT",
-    prefs: {},
-    labelNames: {},
-    cards: [],
-    lists: []
-    */
-
-    public Boolean getClosed() {
-        return closed;
-    }
-
-    public void setClosed(Boolean closed) {
-        this.closed = closed;
-    }
 
     private String id;
     private String name;
@@ -33,10 +14,9 @@ public class TrelloBoard {
     private Boolean pinned;
     private String url;
     private String shortUrl;
-    private String prefs;
-    private String labelNames;
-    private String cards;
-    private String lists;
+    private Map<String, String> prefs;
+    private Map<String, String> labelNames;
+    private List<TrelloCard> cards;
 
     public String getId() {
         return id;
@@ -68,6 +48,14 @@ public class TrelloBoard {
 
     public void setDescData(String descData) {
         this.descData = descData;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 
     public String getIdOrganization() {
@@ -102,35 +90,27 @@ public class TrelloBoard {
         this.shortUrl = shortUrl;
     }
 
-    public String getPrefs() {
+    public Map<String, String> getPrefs() {
         return prefs;
     }
 
-    public void setPrefs(String prefs) {
+    public void setPrefs(Map<String, String> prefs) {
         this.prefs = prefs;
     }
 
-    public String getLabelNames() {
+    public Map<String, String> getLabelNames() {
         return labelNames;
     }
 
-    public void setLabelNames(String labelNames) {
+    public void setLabelNames(Map<String, String> labelNames) {
         this.labelNames = labelNames;
     }
 
-    public String getCards() {
+    public List<TrelloCard> getCards() {
         return cards;
     }
 
-    public void setCards(String cards) {
+    public void setCards(List<TrelloCard> cards) {
         this.cards = cards;
-    }
-
-    public String getLists() {
-        return lists;
-    }
-
-    public void setLists(String lists) {
-        this.lists = lists;
     }
 }

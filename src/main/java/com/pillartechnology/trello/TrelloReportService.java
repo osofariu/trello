@@ -1,5 +1,6 @@
 package com.pillartechnology.trello;
 
+import com.pillartechnology.trello.exception.TrelloServiceException;
 import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.Client;
@@ -11,30 +12,41 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class TrelloReportService {
-    private static final String TALENT_URL="https://api.trello.com/1/boards/5730953aa0854542ef8e8ccb?cards=open&card_fields=name,idList,idMembers,labels&lists=open&key=c823d8871c92196366ecc07a68b74ed7&token=ac60537bc5c86244cccec928f0689b12ad0dd437eae6836f08dc90e6f5e4e20b";
-    private static final String boardId_="5730953aa0854542ef8e8ccb";
-    private static final String appKey = "c823d8871c92196366ecc07a68b74ed7";
-    private static final String appToken = "ac60537bc5c86244cccec928f0689b12ad0dd437eae6836f08dc90e6f5e4e20b";
-
+    private static final String TALENT_BASE_URL="https://api.trello.com/1/boards/";
+    private static final String TALENT_URL_ARGS="?cards=open&card_fields=name,idList,idMembers,labels";
     private Invocation.Builder invocationBuilder;
 
-    private Response callTrelloWithGet() {
+    private Response callTrelloWithGet(String boardId, String appKey, String appToken) {
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(TALENT_URL);
-
-//        for (Map.Entry entry: queryParams.entrySet()) {
-//            target =  target.queryParam((String) entry.getKey(), (String) entry.getValue());
-//        }
-        invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+        String url= TALENT_BASE_URL + boardId + TALENT_URL_ARGS + "&key=" + appKey + "&token=" + appToken;
+        WebTarget target = client.target(url);
+        setInvocationBuilderIfUndefined(target.request(MediaType.APPLICATION_JSON));
         return invocationBuilder.get();
     }
 
-    public TrelloBoard getBoard(String boardId) {
-        Response response = callTrelloWithGet();
-        //response.getEntity()
-        //List<TrelloBoard> list = response.readEntity(new GenericType<List<TrelloBoard>>() {});
-        TrelloBoard rs = response.readEntity(new GenericType<TrelloBoard>() {});
+    private void setInvocationBuilderIfUndefined(Invocation.Builder builder){
+        if(invocationBuilder == null){
+            invocationBuilder = builder;
+        }
+    }
+
+    public TrelloBoard getBoard(String boardId, String appKey, String appToken) {
+        Response response = callTrelloWithGet(boardId, appKey, appToken);
+        if(! Response.Status.ACCEPTED.equals(response.getStatus())){
+            throw new TrelloServiceException("Request failed with status: "+response.getStatus());
+        }
+
+        TrelloBoard rs = response.readEntity(TrelloBoard.class);
+
+        for(TrelloCard card : rs.getCards()){
+            System.out.print(card.getName()+" : ");
+            for(TrelloLabel label : card.getLabels()){
+                System.out.print(label.getName()+",");
+            }
+            System.out.println();
+        }
+        System.out.println(rs);
         return rs;
     }
 }

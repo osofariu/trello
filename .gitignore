@@ -45,3 +45,7 @@ Thumbs.db
 build/
 *.ipr
 *.iws
+
+run.sh
+.idea/
+*.iml
