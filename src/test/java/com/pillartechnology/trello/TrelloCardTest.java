@@ -18,13 +18,13 @@ public class TrelloCardTest {
     }
 
     @Test
-    public void givenCardWithLocationIHSLocationFieldIsIHS() {
+    public void givenCardWithLocationIHRLocationFieldIsIHR() {
         TrelloCard card = new TrelloCard();
-        card.setLabels(singletonList(createLabel("IHS")));
+        card.setLabels(singletonList(createLabel("IHR")));
 
         TrelloReportRecord rec = card.makeRecord();
 
-        assertEquals(rec.getLocation(), "IHS");
+        assertEquals(rec.getLocation(), "IHR");
     }
 
     @Test

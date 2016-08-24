@@ -20,6 +20,7 @@ public class TrelloReportService {
 
         Client client = ClientBuilder.newClient();
         String url= TALENT_BASE_URL + boardId + TALENT_URL_ARGS + "&key=" + appKey + "&token=" + appToken;
+        System.out.println(url);
         WebTarget target = client.target(url);
         setInvocationBuilderIfUndefined(target.request(MediaType.APPLICATION_JSON));
         return invocationBuilder.get();
@@ -33,20 +34,9 @@ public class TrelloReportService {
 
     public TrelloBoard getBoard(String boardId, String appKey, String appToken) {
         Response response = callTrelloWithGet(boardId, appKey, appToken);
-        if(! Response.Status.ACCEPTED.equals(response.getStatus())){
+        if( Response.Status.OK.getStatusCode() != response.getStatus()) {
             throw new TrelloServiceException("Request failed with status: "+response.getStatus());
         }
-
-        TrelloBoard rs = response.readEntity(TrelloBoard.class);
-
-        for(TrelloCard card : rs.getCards()){
-            System.out.print(card.getName()+" : ");
-            for(TrelloLabel label : card.getLabels()){
-                System.out.print(label.getName()+",");
-            }
-            System.out.println();
-        }
-        System.out.println(rs);
-        return rs;
+        return response.readEntity(TrelloBoard.class);
     }
 }

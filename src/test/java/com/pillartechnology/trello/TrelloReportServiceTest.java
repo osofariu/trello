@@ -25,6 +25,6 @@ public class TrelloReportServiceTest {
     @Test(expected = TrelloServiceException.class)
     public void givenAnUnsuccessfulResponseFromTrelloThrowAnExceptionToAlertUser() {
         when(invocationBuilder.get()).thenReturn(Response.serverError().build());
-        trelloReportService.getBoard();
+        trelloReportService.getBoard("1", "2", "3");
     }
 }

@@ -1,9 +1,9 @@
 package com.pillartechnology.trello;
 
 public class TrelloReportRecord {
-    private String location;
-    private String role;
-    private String name;
+    private String location = "";
+    private String role = "";
+    private String name = "";
 
     public String getName() {
         return name;
@@ -29,7 +29,8 @@ public class TrelloReportRecord {
         this.location = location;
     }
 
-    public String format() {
+    @Override
+    public String toString() {
         return String.format("%s,%s,%s", name, location, role);
     }
 }

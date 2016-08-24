@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TrelloCard {
 
-    private static final Set<String> locations = new HashSet<String>(Arrays.asList("OVR", "IHS", "GLR"));
+    private static final Set<String> locations = new HashSet<String>(Arrays.asList("OVR", "IHR", "GLR"));
     private static final Set<String> roles = new HashSet<String>(Arrays.asList("Apprentice", "Journeyman", "Craftsman", "Delivery Lead", "Delivery Manager", "Delivery Executive", "Experience Architect", "Experience UI Designer", "Executive Consultant"));
 
         private String id;
