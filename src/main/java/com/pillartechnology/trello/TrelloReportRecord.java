@@ -4,6 +4,7 @@ public class TrelloReportRecord {
     private String location = "";
     private String role = "";
     private String name = "";
+    private Boolean stageKata = false;
 
     public String getName() {
         return name;
@@ -29,8 +30,18 @@ public class TrelloReportRecord {
         this.location = location;
     }
 
+    public Boolean getStageKata() {
+        return stageKata;
+    }
+
+    public void setStageKata(Boolean stageKata) {
+        this.stageKata = stageKata;
+    }
+
     @Override
     public String toString() {
         return String.format("%s,%s,%s", name, location, role);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.pillartechnology.trello;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,15 @@ public class TrelloBoard {
     private Map<String, String> prefs;
     private Map<String, String> labelNames;
     private List<TrelloCard> cards;
+    private List<TrelloList> lists;
+
+    public List<TrelloList> getLists() {
+        return lists;
+    }
+
+    public void setLists(List<TrelloList> lists) {
+        this.lists = lists;
+    }
 
     public String getId() {
         return id;
