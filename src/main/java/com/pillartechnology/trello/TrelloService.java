@@ -1,5 +1,7 @@
 package com.pillartechnology.trello;
 
+import com.pillartechnology.trello.entities.TrelloBoard;
+import com.pillartechnology.trello.entities.TrelloLabel;
 import com.pillartechnology.trello.exception.TrelloServiceException;
 
 import javax.ws.rs.client.Client;
@@ -11,14 +13,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-class TrelloReportService {
+class TrelloService {
 
     private String appKey;
     private String appToken;
     private static final String TALENT_BASE_URL="https://api.trello.com/1/boards/";
     private Invocation.Builder invocationBuilder;
 
-    TrelloReportService(String appKey, String appToken) {
+    TrelloService(String appKey, String appToken) {
         this.appKey = appKey;
         this.appToken = appToken;
     }

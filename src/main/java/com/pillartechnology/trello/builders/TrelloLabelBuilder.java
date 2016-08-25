@@ -1,6 +1,6 @@
 package com.pillartechnology.trello.builders;
 
-import com.pillartechnology.trello.TrelloLabel;
+import com.pillartechnology.trello.entities.TrelloLabel;
 
 public class TrelloLabelBuilder {
     private String id;

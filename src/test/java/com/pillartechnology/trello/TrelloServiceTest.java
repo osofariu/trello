@@ -13,10 +13,10 @@ import javax.ws.rs.core.Response;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TrelloReportServiceTest {
+public class TrelloServiceTest {
 
     @InjectMocks
-    TrelloReportService trelloReportService;
+    TrelloService trelloService;
 
     @Mock
     private Invocation.Builder invocationBuilder;
@@ -25,6 +25,6 @@ public class TrelloReportServiceTest {
     @Test(expected = TrelloServiceException.class)
     public void givenAnUnsuccessfulResponseFromTrelloThrowAnExceptionToAlertUser() {
         when(invocationBuilder.get()).thenReturn(Response.serverError().build());
-        trelloReportService.getBoard("1");
+        trelloService.getBoard("1");
     }
 }

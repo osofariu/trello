@@ -33,4 +33,4 @@ test {
     }
 }
 
-mainClassName = "com.pillartechnology.trello.TrelloReportClient"
+mainClassName = "com.pillartechnology.trello.ReportClient"

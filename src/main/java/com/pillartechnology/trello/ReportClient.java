@@ -2,17 +2,17 @@ package com.pillartechnology.trello;
 
 import java.io.PrintStream;
 
-public class TrelloReportClient {
+public class ReportClient {
 
     private PrintStream clientOutput;
-    TrelloReportRecordService trelloReportService;
+    ReportGenerationService trelloReportService;
 
-    public TrelloReportClient(PrintStream output){
+    public ReportClient(PrintStream output){
         this.clientOutput = output;
     }
 
     public static void main(String[] args) {
-        TrelloReportClient client = new TrelloReportClient(System.out);
+        ReportClient client = new ReportClient(System.out);
         client.run(args);
     }
 
@@ -23,7 +23,7 @@ public class TrelloReportClient {
         }
 
         if (trelloReportService == null) {
-            trelloReportService = new TrelloReportRecordService(args[1], args[2]);
+            trelloReportService = new ReportGenerationService(args[1], args[2]);
         }
 
         String reportOutput = trelloReportService.generateReport(args[0]);

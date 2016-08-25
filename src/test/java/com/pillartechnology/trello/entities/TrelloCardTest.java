@@ -1,8 +1,10 @@
-package com.pillartechnology.trello;
+package com.pillartechnology.trello.entities;
 
+import com.pillartechnology.trello.ReportRecord;
+import com.pillartechnology.trello.entities.TrelloCard;
 import org.junit.Test;
 
-import static com.pillartechnology.trello.TrelloLabel.createLabel;
+import static com.pillartechnology.trello.entities.TrelloLabel.createLabel;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +14,7 @@ public class TrelloCardTest {
         TrelloCard card = new TrelloCard();
         card.setName("John");
 
-        TrelloReportRecord rec = card.makeRecord();
+        ReportRecord rec = card.makeRecord();
 
         assertEquals("John", rec.getName());
     }
@@ -22,7 +24,7 @@ public class TrelloCardTest {
         TrelloCard card = new TrelloCard();
         card.setLabels(singletonList(createLabel("IHR")));
 
-        TrelloReportRecord rec = card.makeRecord();
+        ReportRecord rec = card.makeRecord();
 
         assertEquals(rec.getLocation(), "IHR");
     }
@@ -32,7 +34,7 @@ public class TrelloCardTest {
         TrelloCard card = new TrelloCard();
         card.setLabels(singletonList(createLabel("Delivery Lead")));
 
-        TrelloReportRecord rec = card.makeRecord();
+        ReportRecord rec = card.makeRecord();
 
         assertEquals(rec.getRole(), "Delivery Lead");
     }

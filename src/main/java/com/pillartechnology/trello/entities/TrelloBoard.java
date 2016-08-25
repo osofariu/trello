@@ -1,6 +1,5 @@
-package com.pillartechnology.trello;
+package com.pillartechnology.trello.entities;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

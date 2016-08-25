@@ -1,4 +1,4 @@
-package com.pillartechnology.trello;
+package com.pillartechnology.trello.entities;
 
 public class TrelloList {
     String id;

@@ -9,27 +9,31 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class TrelloClientReportTest {
+public class ReportClientTest {
 
-    TrelloReportRecordService trelloReportRecordService = mock(TrelloReportRecordService.class);
+    ReportGenerationService trelloReportRecordService = mock(ReportGenerationService.class);
 
     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     PrintStream out = new PrintStream(buffer);
 
     @Test
     public void trelloCalledWithLessThanTreeArgumentsReturnsUsage() {
-        TrelloReportClient client = new TrelloReportClient(out);
+        ReportClient client = new ReportClient(out);
         client.trelloReportService = trelloReportRecordService;
+
         client.run(new String[]{});
+
         assertEquals("Usage: TrelloClientReport boardId appKey appToken\n", buffer.toString());
     }
 
 
     @Test
     public void trelloClientShouldAcceptArgsToListBoards() {
-        TrelloReportClient client = new TrelloReportClient(out);
+        ReportClient client = new ReportClient(out);
         client.trelloReportService = trelloReportRecordService;
+
         client.run(new String[]{"boardId", "appKey", "appToken"});
+
         verify(trelloReportRecordService).generateReport("boardId");
     }
 }

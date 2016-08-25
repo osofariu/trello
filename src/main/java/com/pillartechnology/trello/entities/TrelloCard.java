@@ -1,4 +1,6 @@
-package com.pillartechnology.trello;
+package com.pillartechnology.trello.entities;
+
+import com.pillartechnology.trello.ReportRecord;
 
 import java.util.*;
 
@@ -53,8 +55,8 @@ public class TrelloCard {
         this.labels = labels;
     }
 
-    public TrelloReportRecord makeRecord() {
-        TrelloReportRecord rec = new TrelloReportRecord();
+    public ReportRecord makeRecord() {
+        ReportRecord rec = new ReportRecord();
 
         rec.setName(name);
 

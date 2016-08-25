@@ -1,6 +1,6 @@
 package com.pillartechnology.trello;
 
-public class TrelloReportRecord {
+public class ReportRecord {
     private String location = "";
     private String role = "";
     private String name = "";
