@@ -34,7 +34,7 @@ public class ReportGenerationServiceTest {
         TrelloBoard board = new TrelloBoard();
         board.setId("board123");
         board.setLists(new ArrayList<>());
-        board.setCards(singletonList(createCard("card-name", "loc", "role")));
+        board.setCards(singletonList(createCard("card-name", "loc", "role", "listID")));
 
         when(trelloReportService.getBoard("board123")).thenReturn(board);
         List<TrelloLabel> labels = singletonList(trelloLabel().name("card-name").build());
@@ -47,9 +47,8 @@ public class ReportGenerationServiceTest {
     @Test
     public void whenGeneratingReport_callsTrelloRecordServiceGetBoard(){
         TrelloBoard board = new TrelloBoard();
-        board.setCards(asList(createCard("OVR", "OVR", "OVR")));
-        board.setLabelNames(createLabels());
-        board.setLists(new ArrayList<>());
+        board.setCards(asList(createCard("name", "OVR", "role", "listID")));
+        board.setLists(asList(createList("listID", "Test List")));
         when(trelloReportService.getBoard("1")).thenReturn(board);
 
         reportGenerationService.generateReport("1");
@@ -60,27 +59,20 @@ public class ReportGenerationServiceTest {
     @Test
     public void whenGeneratingReportWithOneCard_CreateCSVFormatRecordsAsString() {
         TrelloBoard board = new TrelloBoard();
-        board.setCards(asList(createCard("Joe", "OVR", "Journeyman")));
-        board.setLabelNames(createLabels());
-        board.setLists(new ArrayList<>());
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Test List")));
         when(trelloReportService.getBoard("1")).thenReturn(board);
-
 
         String result = reportGenerationService.generateReport("1");
 
-        assertEquals("Joe,OVR,Journeyman\n", result);
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n", result);
     }
 
     @Test
-    public void whenBoardHasCardBelongingToKataList_ReportRecordShouldIndicateListMembership() {
+    public void whenCardBelongsToKataList_ReportRecordShouldIndicateThat() {
         TrelloBoard board = new TrelloBoard();
-        TrelloCard aCard = createCard("Joe", "OVR", "Journeyman");
-        aCard.setIdList("123");
-        board.setCards(asList(aCard));
-        TrelloList trelloList = new TrelloList();
-        trelloList.setName("Kata Exercise (Polyglot)");
-        trelloList.setId("123");
-        board.setLists(asList(trelloList));
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Kata Exercise (Polyglot)")));
 
         when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
 
@@ -90,20 +82,88 @@ public class ReportGenerationServiceTest {
         assertTrue(cardRecord.getStageKata());
     }
 
-    private Map<String,String> createLabels() {
-        Map<String, String> labels = new HashMap<>();
-        labels.put("Blue", "OVR");
+    @Test
+    public void whenCardBelongsToLeadershipList_ReportRecordShouldIndicateThat() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Leadership Interview")));
 
-        return labels;
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+        List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        ReportRecord cardRecord = records.get(0);
+
+        assertTrue(cardRecord.getStageLeadership());
     }
 
-    private TrelloCard createCard(String name, String loc, String role) {
+    @Test
+    public void whenCardBelongsToHiredList_ReportRecordShouldIndicateThat() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Started @ Pillar")));
+
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+        List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        ReportRecord cardRecord = records.get(0);
+
+        assertTrue(cardRecord.getStageHired());
+    }
+
+
+    @Test
+    public void givenCardBelongsToList_ReportRecordShouldContainNameOfList() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "The Cool Exclusive List")));
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+
+        List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        ReportRecord cardRecord = records.get(0);
+
+        assertEquals("The Cool Exclusive List", cardRecord.getListName());
+    }
+
+    @Test
+    public void whenGeneratingReport_TheFirstRowIsColumnNames() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Kata Exercise (Polyglot)")));
+
+        when(trelloReportService.getBoard("1")).thenReturn(board);
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+        String result = reportGenerationService.generateReport("1");
+
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"kata\"\n", result);
+    }
+
+    @Test
+    public void whenCardDoesntBelongToAnOpenList_ThenShouldFilterItOut() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "archivedListId")));
+        board.setLists(new ArrayList<TrelloList>());
+
+        List<ReportRecord> recorcs = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        assertTrue(recorcs.isEmpty());
+    }
+
+    private TrelloCard createCard(String name, String loc, String role, String listId) {
         TrelloCard card = new TrelloCard();
         card.setName(name);
         card.setLabels(new ArrayList<>());
         card.getLabels().add(trelloLabel().name(loc).build());
         card.getLabels().add(trelloLabel().name(role).build());
+        card.setIdList(listId);
 
         return card;
+    }
+
+    private TrelloList createList(String listId, String listName) {
+        TrelloList trelloList = new TrelloList();
+        trelloList.setId(listId);
+        trelloList.setName(listName);
+        return trelloList;
     }
 }

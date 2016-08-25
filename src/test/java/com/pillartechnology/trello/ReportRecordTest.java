@@ -10,13 +10,66 @@ import static org.junit.Assert.assertEquals;
 public class ReportRecordTest {
 
     @Test
-    public void givenTrelloReportRecordFormat_formatShouldFormatRecordAsCSV() {
+    public void givenTrelloReportRecordFormat_NoListsformatShouldFormatRecordAsCSV() {
         TrelloCard tc = new TrelloCard();
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
+        rec.setListName("list");
 
-        assertEquals("John Doe,OVR,Delivery Lead", rec.toString());
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"\"", rec.toString());
+
+    }
+
+    @Test
+    public void givenReportRecordForKataStage_formatShouldShowThat() {
+        TrelloCard tc = new TrelloCard();
+        tc.setName("John Doe");
+        tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
+        ReportRecord rec = tc.makeRecord();
+        rec.setListName("list");
+        rec.setStageKata(true);
+
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"kata\"", rec.toString());
+
+    }
+
+    @Test
+    public void givenReportRecordForLeadershipStage_formatShouldShowThat() {
+        TrelloCard tc = new TrelloCard();
+        tc.setName("John Doe");
+        tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
+        ReportRecord rec = tc.makeRecord();
+        rec.setListName("list");
+        rec.setStageLeadership(true);
+
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"leadership\"", rec.toString());
+
+    }
+
+    @Test
+    public void givenReportRecordForHireStage_formatShouldShowThat() {
+        TrelloCard tc = new TrelloCard();
+        tc.setName("John Doe");
+        tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
+        ReportRecord rec = tc.makeRecord();
+        rec.setListName("list");
+        rec.setStageHired(true);
+
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"hired\"", rec.toString());
+
+    }
+
+    @Test
+    public void givenReportRecordHasList_formatShouldShowThat() {
+        TrelloCard tc = new TrelloCard();
+        tc.setName("John Doe");
+        tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
+        ReportRecord rec = tc.makeRecord();
+        rec.setListName("The List");
+        rec.setStageHired(true);
+
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"The List\",\"hired\"", rec.toString());
 
     }
 

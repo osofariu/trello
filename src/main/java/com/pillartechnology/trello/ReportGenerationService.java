@@ -4,14 +4,12 @@ import com.pillartechnology.trello.entities.TrelloBoard;
 import com.pillartechnology.trello.entities.TrelloLabel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class ReportGenerationService {
 
     TrelloService trelloService;
 
-    /// TODO: Meri to validate these mappings:
-    //List<String> leadershipColumns = Arrays.asList("Leadership Interview", "Fully Vetted", "Offer Pending");
-    //List<String> hiredColumns = Arrays.asList("Started @ Pillar", "Offer Accepted");
 
     ReportGenerationService(String appKey, String appToken) {
         trelloService = new TrelloService(appKey, appToken);
@@ -27,7 +25,8 @@ class ReportGenerationService {
     private String generateOutputFromRecords(List<ReportRecord> records) {
         StringBuilder builder = new StringBuilder();
 
-        // TODO: Don't foget to add header row before data records
+        // TODO: Don't forget to add header row before data records
+        builder.append("Name,Location,Role,ListName,Stage\n");
         records.forEach(record -> builder.append(record).append("\n"));
 
         return builder.toString();
@@ -42,15 +41,30 @@ class ReportGenerationService {
             labelNames.add(label.getName());
         }
 
+        Map<String,String> idToNameListMap = new HashMap<>();
+        board.getLists().forEach(treloList -> {
+            idToNameListMap.put(treloList.getId(), treloList.getName());
+        });
+
         List<ReportRecord> records = new ArrayList<>();
+        /// TODO: Meri to validate these mappings:
+
         Set<String> kataListIDs = getListIdsForLists(board, Arrays.asList("Kata Exercise (Polyglot)", "Android/iOS Kata Exercise (ADS)", "Falcon Kata Exercise", "DevOps Kata Exercise", "DevOps Presentation"));
+        Set<String> leadershipListIDs = getListIdsForLists(board, Arrays.asList("Leadership Interview", "Fully Vetted", "Offer Pending"));
+        Set<String> hiredListIds = getListIdsForLists(board, Arrays.asList("Started @ Pillar", "Offer Accepted"));
 
         board.getCards().forEach(card -> {
-            if(! labelNames.contains(card.getName())){
-                ReportRecord cardRecord = card.makeRecord();
+            String listName = idToNameListMap.get(card.getIdList());
+            if(! labelNames.contains(card.getName()) && listName != null) {
+                ReportRecord reportRecord = card.makeRecord();
+                reportRecord.setListName(idToNameListMap.get(card.getIdList()));
                 if (kataListIDs.contains(card.getIdList()))
-                    cardRecord.setStageKata(true);
-                records.add(cardRecord);
+                    reportRecord.setStageKata(true);
+                if (leadershipListIDs.contains(card.getIdList()))
+                    reportRecord.setStageLeadership(true);
+                if (hiredListIds.contains(card.getIdList()))
+                    reportRecord.setStageHired(true);
+                records.add(reportRecord);
             }
         });
 

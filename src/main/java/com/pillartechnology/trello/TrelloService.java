@@ -27,7 +27,6 @@ class TrelloService {
 
     private Response callTrelloWithGet(String url) {
         Client client = ClientBuilder.newClient();
-        System.out.println(url);
         WebTarget target = client.target(url);
         setInvocationBuilderIfUndefined(target.request(MediaType.APPLICATION_JSON));
         Response response = invocationBuilder.get();

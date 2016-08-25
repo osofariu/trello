@@ -1,10 +1,8 @@
 package com.pillartechnology.trello.entities;
 
 import com.pillartechnology.trello.ReportRecord;
-import com.pillartechnology.trello.entities.TrelloCard;
 import org.junit.Test;
 
-import static com.pillartechnology.trello.entities.TrelloLabel.createLabel;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
@@ -37,5 +35,11 @@ public class TrelloCardTest {
         ReportRecord rec = card.makeRecord();
 
         assertEquals(rec.getRole(), "Delivery Lead");
+    }
+
+    public static TrelloLabel createLabel(String labelName) {
+        TrelloLabel l = new TrelloLabel();
+        l.setName(labelName);
+        return l;
     }
 }

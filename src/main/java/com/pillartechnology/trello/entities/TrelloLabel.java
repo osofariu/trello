@@ -47,10 +47,4 @@ public class TrelloLabel {
     public void setUses(Integer uses) {
         this.uses = uses;
     }
-
-    public static TrelloLabel createLabel(String labelName) {
-        TrelloLabel l = new TrelloLabel();
-        l.setName(labelName);
-        return l;
-    }
 }
