@@ -4,6 +4,7 @@ public class ReportRecord {
     private String location = "";
     private String role = "";
     private String name = "";
+    private String idList = "";
     private String listName = "";
     private Boolean stageKata = false;
     private Boolean stageLeadership = false;
@@ -20,6 +21,10 @@ public class ReportRecord {
     public String getListName() {return listName;}
 
     public void setListName(String listName) {this.listName = listName;}
+
+    public String getIdList() {return idList;}
+
+    public void setIdList(String idList) {this.idList = idList;}
 
     public String getRole() {
         return role;
@@ -72,4 +77,6 @@ public class ReportRecord {
     public void setStageHired(Boolean stageHired) {
         this.stageHired = stageHired;
     }
+
+
 }

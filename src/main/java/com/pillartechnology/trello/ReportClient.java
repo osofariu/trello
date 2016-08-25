@@ -5,7 +5,7 @@ import java.io.PrintStream;
 public class ReportClient {
 
     private PrintStream clientOutput;
-    ReportGenerationService trelloReportService;
+    ReportGenerationService reportGenerationService;
 
     public ReportClient(PrintStream output){
         this.clientOutput = output;
@@ -22,11 +22,11 @@ public class ReportClient {
             return;
         }
 
-        if (trelloReportService == null) {
-            trelloReportService = new ReportGenerationService(args[1], args[2]);
+        if (reportGenerationService == null) {
+            reportGenerationService = new ReportGenerationService(args[1], args[2]);
         }
 
-        String reportOutput = trelloReportService.generateReport(args[0]);
+        String reportOutput = reportGenerationService.generateReport(args[0]);
         System.out.println(reportOutput);
     }
 }

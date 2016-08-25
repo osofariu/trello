@@ -59,6 +59,7 @@ public class TrelloCard {
         ReportRecord rec = new ReportRecord();
 
         rec.setName(name);
+        rec.setIdList(idList);
 
         for (TrelloLabel label : labels) {
             if (locations.contains(label.getName())) {

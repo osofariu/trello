@@ -1,27 +1,32 @@
 package com.pillartechnology.trello;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ReportClientTest {
 
-    ReportGenerationService trelloReportRecordService = mock(ReportGenerationService.class);
+    private ReportGenerationService reportGenerationService;
+    private ReportClient reportClient;
+    private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    private PrintStream out = new PrintStream(buffer);
 
-    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(buffer);
+    @Before
+    public void setUp() {
+        reportGenerationService = mock(ReportGenerationService.class);
+        reportClient = new ReportClient(out);
+        reportClient.reportGenerationService = reportGenerationService;
 
+    }
     @Test
     public void trelloCalledWithLessThanTreeArgumentsReturnsUsage() {
-        ReportClient client = new ReportClient(out);
-        client.trelloReportService = trelloReportRecordService;
-
-        client.run(new String[]{});
+        reportClient.run(new String[]{});
 
         assertEquals("Usage: TrelloClientReport boardId appKey appToken\n", buffer.toString());
     }
@@ -29,11 +34,10 @@ public class ReportClientTest {
 
     @Test
     public void trelloClientShouldAcceptArgsToListBoards() {
-        ReportClient client = new ReportClient(out);
-        client.trelloReportService = trelloReportRecordService;
+        when(reportGenerationService.generateReport(Mockito.any(String.class))).thenReturn("");
 
-        client.run(new String[]{"boardId", "appKey", "appToken"});
+        reportClient.run(new String[]{"boardId", "appKey", "appToken"});
 
-        verify(trelloReportRecordService).generateReport("boardId");
+        verify(reportGenerationService).generateReport("boardId");
     }
 }
