@@ -15,7 +15,7 @@ public class ReportRecordTest {
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
-        rec.setIdList("list");
+        rec.setListName("list");
 
         assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"\"", rec.toString());
 
@@ -27,10 +27,10 @@ public class ReportRecordTest {
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
-        rec.setIdList("list");
-        rec.setStageKata(true);
+        rec.setListName("list");
+        rec.setStage(ReportRecord.STAGE_KATA);
 
-        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"kata\"", rec.toString());
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Kata\"", rec.toString());
 
     }
 
@@ -40,10 +40,10 @@ public class ReportRecordTest {
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
-        rec.setIdList("list");
-        rec.setStageLeadership(true);
+        rec.setListName("list");
+        rec.setStage(ReportRecord.STAGE_LEADERSHIP);
 
-        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"leadership\"", rec.toString());
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Leadership\"", rec.toString());
 
     }
 
@@ -53,10 +53,10 @@ public class ReportRecordTest {
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
-        rec.setIdList("list");
-        rec.setStageHired(true);
+        rec.setListName("list");
+        rec.setStage(ReportRecord.STAGE_OFFER);
 
-        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"hired\"", rec.toString());
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Offer Pending\"", rec.toString());
 
     }
 
@@ -66,10 +66,10 @@ public class ReportRecordTest {
         tc.setName("John Doe");
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
-        rec.setIdList("The List");
-        rec.setStageHired(true);
+        rec.setListName("The List");
+        rec.setStage(ReportRecord.STAGE_OFFER);
 
-        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"The List\",\"hired\"", rec.toString());
+        assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"The List\",\"Offer Pending\"", rec.toString());
 
     }
 

@@ -1,11 +1,18 @@
 package com.pillartechnology.trello;
 
 public class ReportRecord {
+    public static final String STAGE_KATA = "Kata";
+    public static final String STAGE_PAIRING = "Pairing";
+    public static final String STAGE_LEADERSHIP = "Leadership";
+    public static final String STAGE_VETTED = "Fully Vetted";
+    public static final String STAGE_OFFER = "Offer Pending";
+
     private String location = "";
     private String role = "";
     private String name = "";
     private String idList = "";
     private String listName = "";
+    private String stage = "";
     private Boolean stageKata = false;
     private Boolean stageLeadership = false;
     private Boolean stageHired = false;
@@ -42,41 +49,16 @@ public class ReportRecord {
         this.location = location;
     }
 
-    public Boolean getStageKata() {
-        return stageKata;
+    public void setStage(String stage){
+        this.stage = stage;
     }
 
-    public void setStageKata(Boolean stageKata) {
-        this.stageKata = stageKata;
+    public String getStage(){
+        return stage;
     }
 
     @Override
     public String toString() {
-        return String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"", name, location, role, listName, getStage());
+        return String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"", name, location, role, listName, stage);
     }
-
-    private String getStage() {
-        if (stageKata) return "kata";
-        if (stageLeadership) return "leadership";
-        if (stageHired) return "hired";
-        return "";
-    }
-
-    public Boolean getStageLeadership() {
-        return stageLeadership;
-    }
-
-    public void setStageLeadership(Boolean stageLeadership) {
-        this.stageLeadership = stageLeadership;
-    }
-
-    public Boolean getStageHired() {
-        return stageHired;
-    }
-
-    public void setStageHired(Boolean stageHired) {
-        this.stageHired = stageHired;
-    }
-
-
 }

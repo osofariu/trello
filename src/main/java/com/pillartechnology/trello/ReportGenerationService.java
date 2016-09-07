@@ -1,5 +1,6 @@
 package com.pillartechnology.trello;
 
+import com.pillartechnology.trello.entities.TalentStages;
 import com.pillartechnology.trello.entities.TrelloBoard;
 import com.pillartechnology.trello.entities.TrelloCard;
 import com.pillartechnology.trello.entities.TrelloLabel;
@@ -10,13 +11,11 @@ import java.util.stream.Collectors;
 class ReportGenerationService {
 
     TrelloService trelloService;
+    TrelloProperties trelloProps;
 
-    private static final List<String> listsForKataStage = Arrays.asList("Kata Exercise (Polyglot)", "Android/iOS Kata Exercise (ADS)", "Falcon Kata Exercise", "DevOps Kata Exercise", "DevOps Presentation");
-    private static final List<String> listsForLeadershipStage =  Arrays.asList("Leadership Interview", "Fully Vetted", "Offer Pending");
-    private static final List<String> listsForHiredStage = Arrays.asList("Started @ Pillar", "Offer Accepted");
-
-    ReportGenerationService(String appKey, String appToken) {
+    public ReportGenerationService(String appKey, String appToken) {
         trelloService = new TrelloService(appKey, appToken);
+        trelloProps = new TrelloProperties();
     }
 
     String generateReport(String boardId)  {
@@ -30,16 +29,17 @@ class ReportGenerationService {
         Set<String> labelNames = retrieveLabelNamesFromTrello(board);
         Map<String, String> listIdToNameMap = mapLabelIdToName(board);
 
-        Set<String> kataListIDs = getListIdsForLists(board, listsForKataStage);
-        Set<String> leadershipListIDs = getListIdsForLists(board, listsForLeadershipStage);
-        Set<String> hiredListIds = getListIdsForLists(board, listsForHiredStage);
+        TalentStages stages = new TalentStages();
+        stages.setKataListIds(getListIdsForLists(board, trelloProps.getListNamesForKataStage()));
+        stages.setLeadershipListIds(getListIdsForLists(board, trelloProps.getListNamesForLeadershipStage()));
+        stages.setOfferPendingListIds(getListIdsForLists(board, trelloProps.getListNamesForOfferPendingStage()));
 
         return  board.getCards().stream()
                 .filter(card -> cardIsACandidate(labelNames, card.getName()))
                 .filter(card -> cardIsNotInArchivedList(card, listIdToNameMap))
                 .map(TrelloCard::makeRecord)
                 .map(record -> addListNameToRecord(record, listIdToNameMap))
-                .map(record -> classifyCandidate(record, kataListIDs, leadershipListIDs, hiredListIds))
+                .map(record -> classifyCandidate(record, stages))
                 .collect(Collectors.toList());
     }
 
@@ -48,13 +48,14 @@ class ReportGenerationService {
         return record;
     }
 
-    private ReportRecord classifyCandidate(ReportRecord record,  Set<String> kataListIDs,  Set<String> leadershipListIDs,  Set<String> hiredListIds) {
-        if (kataListIDs.contains(record.getIdList()))
-            record.setStageKata(true);
-        if (leadershipListIDs.contains(record.getIdList()))
-            record.setStageLeadership(true);
-        if (hiredListIds.contains(record.getIdList()))
-            record.setStageHired(true);
+    private ReportRecord classifyCandidate(ReportRecord record, TalentStages stages) {
+        if (stages.getKataListIds().contains(record.getIdList()))
+            record.setStage(ReportRecord.STAGE_KATA);
+        else if (stages.getLeadershipListIds().contains(record.getIdList()))
+            record.setStage(ReportRecord.STAGE_LEADERSHIP);
+        else if (stages.getOfferPendingListIds().contains(record.getIdList()))
+            record.setStage(ReportRecord.STAGE_OFFER);
+
         return record;
     }
 
@@ -88,7 +89,7 @@ class ReportGenerationService {
         return builder.toString();
     }
 
-    private Set<String> getListIdsForLists(TrelloBoard board, List<String> listNames) {
+    private Set<String> getListIdsForLists(TrelloBoard board, Set<String> listNames) {
         Set<String> listIDs = new HashSet<>();
         board.getLists().forEach(trelloList -> {
             if (listNames.contains(trelloList.getName()))

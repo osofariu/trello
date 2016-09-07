@@ -22,11 +22,17 @@ import static org.mockito.Mockito.when;
 public class ReportGenerationServiceTest {
 
     private TrelloService trelloReportService = mock(TrelloService.class);
+    private TrelloProperties trelloProps = mock(TrelloProperties.class);
     private ReportGenerationService reportGenerationService = new ReportGenerationService("appKey", "appToken");
 
     @Before
     public void setUp() {
         reportGenerationService.trelloService = trelloReportService;
+        reportGenerationService.trelloProps = trelloProps;
+
+        when(trelloProps.getListNamesForKataStage()).thenReturn(new HashSet<String>(Arrays.asList("Kata Exercise (Polyglot)")));
+        when(trelloProps.getListNamesForLeadershipStage()).thenReturn(new HashSet<String>(Arrays.asList("Leadership Interview")));
+        when(trelloProps.getListNamesForOfferPendingStage()).thenReturn(new HashSet<String>(Arrays.asList("Offer Pending")));
     }
 
     @Test
@@ -79,7 +85,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertTrue(cardRecord.getStageKata());
+        assertEquals(ReportRecord.STAGE_KATA, cardRecord.getStage());
     }
 
     @Test
@@ -93,21 +99,21 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertTrue(cardRecord.getStageLeadership());
+        assertEquals(ReportRecord.STAGE_LEADERSHIP, cardRecord.getStage());
     }
 
     @Test
-    public void whenCardBelongsToHiredList_ReportRecordShouldIndicateThat() {
+    public void whenCardBelongsToOfferPending_ReportRecordShouldIndicateThat() {
         TrelloBoard board = new TrelloBoard();
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
-        board.setLists(asList(createList("123", "Started @ Pillar")));
+        board.setLists(asList(createList("123", "Offer Pending")));
 
         when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertTrue(cardRecord.getStageHired());
+        assertEquals(ReportRecord.STAGE_OFFER, cardRecord.getStage());
     }
 
 
@@ -136,7 +142,7 @@ public class ReportGenerationServiceTest {
 
         String result = reportGenerationService.generateReport("1");
 
-        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"kata\"\n", result);
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n", result);
     }
 
     @Test
