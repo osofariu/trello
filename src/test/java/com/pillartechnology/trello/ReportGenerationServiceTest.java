@@ -33,6 +33,8 @@ public class ReportGenerationServiceTest {
         when(trelloProps.getListNamesForKataStage()).thenReturn(new HashSet<String>(Arrays.asList("Kata Exercise (Polyglot)")));
         when(trelloProps.getListNamesForLeadershipStage()).thenReturn(new HashSet<String>(Arrays.asList("Leadership Interview")));
         when(trelloProps.getListNamesForOfferPendingStage()).thenReturn(new HashSet<String>(Arrays.asList("Offer Pending")));
+        when(trelloProps.getListNamesForPairingStage()).thenReturn(new HashSet<String>(Arrays.asList("DevOps Presentation")));
+        when(trelloProps.getListNamesForVettedStage()).thenReturn(new HashSet<String>(Arrays.asList("Fully Vetted")));
     }
 
     @Test
@@ -115,6 +117,35 @@ public class ReportGenerationServiceTest {
 
         assertEquals(ReportRecord.STAGE_OFFER, cardRecord.getStage());
     }
+
+    @Test
+    public void whenCardBelongsToPairing_ReportRecordShouldIndicateThat() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "DevOps Presentation")));
+
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+        List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        ReportRecord cardRecord = records.get(0);
+
+        assertEquals(ReportRecord.STAGE_PAIRING, cardRecord.getStage());
+    }
+
+    @Test
+    public void whenCardBelongsToFullyVetted_ReportRecordShouldIndicateThat() {
+        TrelloBoard board = new TrelloBoard();
+        board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
+        board.setLists(asList(createList("123", "Fully Vetted")));
+
+        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+
+        List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
+        ReportRecord cardRecord = records.get(0);
+
+        assertEquals(ReportRecord.STAGE_VETTED, cardRecord.getStage());
+    }
+
 
 
     @Test

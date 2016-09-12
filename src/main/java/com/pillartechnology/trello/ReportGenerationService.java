@@ -33,6 +33,8 @@ class ReportGenerationService {
         stages.setKataListIds(getListIdsForLists(board, trelloProps.getListNamesForKataStage()));
         stages.setLeadershipListIds(getListIdsForLists(board, trelloProps.getListNamesForLeadershipStage()));
         stages.setOfferPendingListIds(getListIdsForLists(board, trelloProps.getListNamesForOfferPendingStage()));
+        stages.setPairingListIds(getListIdsForLists(board, trelloProps.getListNamesForPairingStage()));
+        stages.setVettedListIds(getListIdsForLists(board, trelloProps.getListNamesForVettedStage()));
 
         return  board.getCards().stream()
                 .filter(card -> cardIsACandidate(labelNames, card.getName()))
@@ -55,6 +57,10 @@ class ReportGenerationService {
             record.setStage(ReportRecord.STAGE_LEADERSHIP);
         else if (stages.getOfferPendingListIds().contains(record.getIdList()))
             record.setStage(ReportRecord.STAGE_OFFER);
+        else if (stages.getPairingListIds().contains(record.getIdList()))
+            record.setStage(ReportRecord.STAGE_PAIRING);
+        else if (stages.getVettedListIds().contains(record.getIdList()))
+            record.setStage(ReportRecord.STAGE_VETTED);
 
         return record;
     }
