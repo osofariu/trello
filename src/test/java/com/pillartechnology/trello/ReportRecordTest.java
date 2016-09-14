@@ -1,5 +1,7 @@
 package com.pillartechnology.trello;
 
+import static com.pillartechnology.trello.Stages.*;
+
 import com.pillartechnology.trello.entities.TrelloCard;
 import com.pillartechnology.trello.entities.TrelloLabel;
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class ReportRecordTest {
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
         rec.setListName("list");
-        rec.setStage(ReportRecord.STAGE_KATA);
+        rec.setStage(STAGE_KATA);
 
         assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Kata\"", rec.toString());
 
@@ -41,7 +43,7 @@ public class ReportRecordTest {
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
         rec.setListName("list");
-        rec.setStage(ReportRecord.STAGE_LEADERSHIP);
+        rec.setStage(STAGE_LEADERSHIP);
 
         assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Leadership\"", rec.toString());
 
@@ -54,7 +56,7 @@ public class ReportRecordTest {
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
         rec.setListName("list");
-        rec.setStage(ReportRecord.STAGE_OFFER);
+        rec.setStage(STAGE_OFFER);
 
         assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"list\",\"Offer Pending\"", rec.toString());
 
@@ -67,7 +69,7 @@ public class ReportRecordTest {
         tc.setLabels(asList(createLabel("Delivery Lead"), createLabel("OVR")));
         ReportRecord rec = tc.makeRecord();
         rec.setListName("The List");
-        rec.setStage(ReportRecord.STAGE_OFFER);
+        rec.setStage(STAGE_OFFER);
 
         assertEquals("\"John Doe\",\"OVR\",\"Delivery Lead\",\"The List\",\"Offer Pending\"", rec.toString());
 

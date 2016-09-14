@@ -1,5 +1,7 @@
 package com.pillartechnology.trello;
 
+import static com.pillartechnology.trello.Stages.*;
+
 import com.pillartechnology.trello.entities.TrelloBoard;
 import com.pillartechnology.trello.entities.TrelloCard;
 import com.pillartechnology.trello.entities.TrelloLabel;
@@ -87,7 +89,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertEquals(ReportRecord.STAGE_KATA, cardRecord.getStage());
+        assertEquals(STAGE_KATA, cardRecord.getStage());
     }
 
     @Test
@@ -101,7 +103,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertEquals(ReportRecord.STAGE_LEADERSHIP, cardRecord.getStage());
+        assertEquals(STAGE_LEADERSHIP, cardRecord.getStage());
     }
 
     @Test
@@ -115,7 +117,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertEquals(ReportRecord.STAGE_OFFER, cardRecord.getStage());
+        assertEquals(STAGE_OFFER, cardRecord.getStage());
     }
 
     @Test
@@ -129,7 +131,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertEquals(ReportRecord.STAGE_PAIRING, cardRecord.getStage());
+        assertEquals(STAGE_PAIRING, cardRecord.getStage());
     }
 
     @Test
@@ -143,7 +145,7 @@ public class ReportGenerationServiceTest {
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
 
-        assertEquals(ReportRecord.STAGE_VETTED, cardRecord.getStage());
+        assertEquals(STAGE_VETTED, cardRecord.getStage());
     }
 
 

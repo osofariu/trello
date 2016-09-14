@@ -1,5 +1,7 @@
 package com.pillartechnology.trello;
 
+import static com.pillartechnology.trello.Stages.*;
+
 import com.pillartechnology.trello.entities.TalentStages;
 import com.pillartechnology.trello.entities.TrelloBoard;
 import com.pillartechnology.trello.entities.TrelloCard;
@@ -52,15 +54,15 @@ class ReportGenerationService {
 
     private ReportRecord classifyCandidate(ReportRecord record, TalentStages stages) {
         if (stages.getKataListIds().contains(record.getIdList()))
-            record.setStage(ReportRecord.STAGE_KATA);
+            record.setStage(STAGE_KATA);
         else if (stages.getLeadershipListIds().contains(record.getIdList()))
-            record.setStage(ReportRecord.STAGE_LEADERSHIP);
+            record.setStage(STAGE_LEADERSHIP);
         else if (stages.getOfferPendingListIds().contains(record.getIdList()))
-            record.setStage(ReportRecord.STAGE_OFFER);
+            record.setStage(STAGE_OFFER);
         else if (stages.getPairingListIds().contains(record.getIdList()))
-            record.setStage(ReportRecord.STAGE_PAIRING);
+            record.setStage(STAGE_PAIRING);
         else if (stages.getVettedListIds().contains(record.getIdList()))
-            record.setStage(ReportRecord.STAGE_VETTED);
+            record.setStage(STAGE_VETTED);
 
         return record;
     }
