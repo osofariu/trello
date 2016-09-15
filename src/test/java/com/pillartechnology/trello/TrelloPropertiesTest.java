@@ -3,13 +3,11 @@ package com.pillartechnology.trello;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
@@ -22,25 +20,6 @@ public class TrelloPropertiesTest {
     @Mock
     private Properties props;
 
-
-    @Test
-    public void whenGettingProperty_loadsPropertiesFromDefaultFile() throws  Exception{
-        Mockito.when(props.getProperty("KataStage")).thenReturn("Kata");
-
-        trelloProps.getListNamesForKataStage();
-
-        Mockito.verify(props).load(Mockito.any(InputStream.class));
-    }
-
-    @Test
-    public void whenGettingProperty_loadsPropertiesIfNotLoaded() throws Exception{
-        Mockito.when(props.getProperty("KataStage")).thenReturn("Kata");
-        trelloProps.setPropertiesFileName("TalentManagement.properties");
-
-        trelloProps.getListNamesForKataStage();
-
-        Mockito.verify(props).load(Mockito.any(InputStream.class));
-    }
 
     @Test
     public void whenGettingListNamesKataStage_returnsCorrectNamesInSet() throws Exception{

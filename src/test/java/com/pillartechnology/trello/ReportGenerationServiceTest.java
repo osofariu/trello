@@ -1,42 +1,61 @@
 package com.pillartechnology.trello;
 
-import static com.pillartechnology.trello.Stages.*;
-
 import com.pillartechnology.trello.entities.TrelloBoard;
 import com.pillartechnology.trello.entities.TrelloCard;
 import com.pillartechnology.trello.entities.TrelloLabel;
 import com.pillartechnology.trello.entities.TrelloList;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.xml.bind.annotation.XmlMimeType;
 import java.util.*;
 
+import static com.pillartechnology.trello.Stages.*;
 import static com.pillartechnology.trello.builders.TrelloLabelBuilder.trelloLabel;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ReportGenerationServiceTest {
 
-    private TrelloService trelloReportService = mock(TrelloService.class);
-    private TrelloProperties trelloProps = mock(TrelloProperties.class);
-    private ReportGenerationService reportGenerationService = new ReportGenerationService("appKey", "appToken");
+    @InjectMocks
+    private ReportGenerationService reportGenerationService;
+
+    @Mock
+    private TrelloService trelloReportService;
+
+    @Mock
+    private TrelloProperties trelloProps;
+
+    @Mock
+    private RecruitToHireService recruitToHireService = new RecruitToHireService();
 
     @Before
     public void setUp() {
         reportGenerationService.trelloService = trelloReportService;
         reportGenerationService.trelloProps = trelloProps;
 
+        when(recruitToHireService.createSummaryCountsForRecords(Mockito.anyList())).thenReturn(new HashMap());
+        when(recruitToHireService.convertSummaryByRoleToString(Mockito.anyMap())).thenReturn("");
+
         when(trelloProps.getListNamesForKataStage()).thenReturn(new HashSet<String>(Arrays.asList("Kata Exercise (Polyglot)")));
         when(trelloProps.getListNamesForLeadershipStage()).thenReturn(new HashSet<String>(Arrays.asList("Leadership Interview")));
         when(trelloProps.getListNamesForOfferPendingStage()).thenReturn(new HashSet<String>(Arrays.asList("Offer Pending")));
         when(trelloProps.getListNamesForPairingStage()).thenReturn(new HashSet<String>(Arrays.asList("DevOps Presentation")));
         when(trelloProps.getListNamesForVettedStage()).thenReturn(new HashSet<String>(Arrays.asList("Fully Vetted")));
+
+        when(trelloProps.getTrelloAppKey()).thenReturn("1");
+        when(trelloProps.getTrelloAppToken()).thenReturn("12");
+        when(trelloProps.getTrelloBoardId()).thenReturn("board");
     }
 
     @Test
@@ -75,7 +94,7 @@ public class ReportGenerationServiceTest {
 
         String result = reportGenerationService.generateReport("1");
 
-        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n", result);
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n\n\n", result);
     }
 
     @Test
@@ -148,8 +167,6 @@ public class ReportGenerationServiceTest {
         assertEquals(STAGE_VETTED, cardRecord.getStage());
     }
 
-
-
     @Test
     public void givenCardBelongsToList_ReportRecordShouldContainNameOfList() {
         TrelloBoard board = new TrelloBoard();
@@ -175,7 +192,7 @@ public class ReportGenerationServiceTest {
 
         String result = reportGenerationService.generateReport("1");
 
-        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n", result);
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n\n\n", result);
     }
 
     @Test

@@ -18,50 +18,70 @@ public class TrelloProperties {
     private static final String VETTED_STG = "FullyVettedStage";
     private static final String OFFER_STG = "OfferPendingStage";
 
+    private static final String BOARD_ID = "BoardID";
+    private static final String APP_KEY = "ApplicationKey";
+    private static final String APP_TOKEN = "ApplicationToken";
+
     private Properties properties = new Properties();
-    private String propsFileName = "TalentManagement.properties";
     private boolean propsLoaded = false;
 
-    public void setPropertiesFileName(String fileName){
-        propsFileName = fileName;
+    private static TrelloProperties trelloProperties;
+
+    private TrelloProperties(){
+
+    }
+
+    public static TrelloProperties getInstance(){
+        if(trelloProperties == null){
+            trelloProperties = new TrelloProperties();
+        }
+
+        return trelloProperties;
     }
 
     public Set<String> getListNamesForKataStage(){
-        loadPropertiesIfNotLoaded();
         String kataStage = properties.getProperty(KATA_STG);
 
         return parsePropertyIntoIndividualNames(kataStage);
     }
 
     public  Set<String> getListNamesForPairingStage(){
-        loadPropertiesIfNotLoaded();
         String pairingStage = properties.getProperty(PAIR_STG);
 
         return parsePropertyIntoIndividualNames(pairingStage);
     }
 
     public Set<String> getListNamesForLeadershipStage() {
-        loadPropertiesIfNotLoaded();
         String leadershipStg = properties.getProperty(LEADER_STG);
 
         return parsePropertyIntoIndividualNames(leadershipStg);
     }
 
     public Set<String> getListNamesForVettedStage(){
-        loadPropertiesIfNotLoaded();
         String vettedStage = properties.getProperty(VETTED_STG);
 
         return parsePropertyIntoIndividualNames(vettedStage);
     }
 
     public Set<String> getListNamesForOfferPendingStage(){
-        loadPropertiesIfNotLoaded();
         String offerStage = properties.getProperty(OFFER_STG);
 
         return parsePropertyIntoIndividualNames(offerStage);
     }
 
-    private void loadPropertiesIfNotLoaded(){
+    public String getTrelloBoardId(){
+        return properties.getProperty(BOARD_ID).trim();
+    }
+
+    public String getTrelloAppKey(){
+        return properties.getProperty(APP_KEY).trim();
+    }
+
+    public String getTrelloAppToken(){
+        return properties.getProperty(APP_TOKEN).trim();
+    }
+
+    public void loadPropertiesFromFile(String propsFileName){
         if(!propsLoaded){
             try {
                 properties.load(new FileInputStream(new File(propsFileName)));

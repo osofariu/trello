@@ -14,17 +14,20 @@ class ReportGenerationService {
 
     TrelloService trelloService;
     TrelloProperties trelloProps;
+    RecruitToHireService recruitToHireService = new RecruitToHireService();
 
-    public ReportGenerationService(String appKey, String appToken) {
-        trelloService = new TrelloService(appKey, appToken);
-        trelloProps = new TrelloProperties();
+    public ReportGenerationService() {
+        trelloService = new TrelloService();
+        trelloProps = TrelloProperties.getInstance();
     }
 
-    String generateReport(String boardId)  {
+    String generateReport(String boardId) {
         TrelloBoard trelloBoard = trelloService.getBoard(boardId);
         List<ReportRecord> records = generateReportRecordsFromTrelloBoard(trelloBoard);
 
-        return generateOutputFromRecords(records);
+        String summaryReport = recruitToHireService.convertSummaryByRoleToString(recruitToHireService.createSummaryCountsForRecords(records));
+
+        return generateOutputFromRecords(records) + "\n\n" + summaryReport;
     }
 
     List<ReportRecord> generateReportRecordsFromTrelloBoard(TrelloBoard board) {

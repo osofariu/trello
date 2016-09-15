@@ -6,6 +6,7 @@ public class ReportClient {
 
     private PrintStream clientOutput;
     ReportGenerationService reportGenerationService;
+    TrelloProperties props = TrelloProperties.getInstance();
 
     public ReportClient(PrintStream output){
         this.clientOutput = output;
@@ -22,8 +23,10 @@ public class ReportClient {
             return;
         }
 
+        props.loadPropertiesFromFile("TalentManagement.bak.properties");
+
         if (reportGenerationService == null) {
-            reportGenerationService = new ReportGenerationService(args[1], args[2]);
+            reportGenerationService = new ReportGenerationService();
         }
 
         String reportOutput = reportGenerationService.generateReport(args[0]);

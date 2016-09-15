@@ -20,9 +20,12 @@ class TrelloService {
     private static final String TALENT_BASE_URL="https://api.trello.com/1/boards/";
     private Invocation.Builder invocationBuilder;
 
-    TrelloService(String appKey, String appToken) {
-        this.appKey = appKey;
-        this.appToken = appToken;
+    private TrelloProperties props;
+
+    public TrelloService() {
+        props = TrelloProperties.getInstance();
+        this.appKey = props.getTrelloAppKey();
+        this.appToken = props.getTrelloAppToken();
     }
 
     private Response callTrelloWithGet(String url) {
