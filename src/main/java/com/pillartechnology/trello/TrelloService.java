@@ -15,18 +15,10 @@ import java.util.List;
 
 class TrelloService {
 
-    private String appKey;
-    private String appToken;
     private static final String TALENT_BASE_URL="https://api.trello.com/1/boards/";
     private Invocation.Builder invocationBuilder;
 
-    private TrelloProperties props;
-
-    public TrelloService() {
-        props = TrelloProperties.getInstance();
-        this.appKey = props.getTrelloAppKey();
-        this.appToken = props.getTrelloAppToken();
-    }
+    private TrelloProperties props = TrelloProperties.getInstance();
 
     private Response callTrelloWithGet(String url) {
         Client client = ClientBuilder.newClient();
@@ -43,9 +35,9 @@ class TrelloService {
         }
     }
 
-    TrelloBoard getBoard(String boardId) {
+    TrelloBoard getBoard() {
         final String TALENT_URL_ARGS="?cards=open&card_fields=name,idList,idMembers,labels&lists=open";
-        final String url= TALENT_BASE_URL + boardId + TALENT_URL_ARGS + "&key=" + appKey + "&token=" + appToken;
+        final String url= TALENT_BASE_URL + props.getTrelloBoardId() + TALENT_URL_ARGS + "&key=" + props.getTrelloAppKey() + "&token=" + props.getTrelloAppToken();
 
         Response response = callTrelloWithGet(url);
         if( Response.Status.OK.getStatusCode() != response.getStatus()) {
@@ -54,8 +46,8 @@ class TrelloService {
         return response.readEntity(TrelloBoard.class);
     }
 
-    List<TrelloLabel> getLabels(String boardId) {
-        String url = TALENT_BASE_URL + boardId + "/labels?" + "&key=" + appKey + "&token=" + appToken;
+    List<TrelloLabel> getLabels() {
+        String url = TALENT_BASE_URL + props.getTrelloBoardId() + "/labels?" + "&key=" + props.getTrelloAppKey() + "&token=" + props.getTrelloAppToken();
         Response response = callTrelloWithGet(url);
         if (Response.Status.OK.getStatusCode() != response.getStatus()) {
             throw new TrelloServiceException("Request failed with status: " + response.getStatus());

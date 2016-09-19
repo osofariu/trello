@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.xml.bind.annotation.XmlMimeType;
 import java.util.*;
 
 import static com.pillartechnology.trello.Stages.*;
@@ -21,8 +20,8 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportGenerationServiceTest {
@@ -65,9 +64,9 @@ public class ReportGenerationServiceTest {
         board.setLists(new ArrayList<>());
         board.setCards(singletonList(createCard("card-name", "loc", "role", "listID")));
 
-        when(trelloReportService.getBoard("board123")).thenReturn(board);
+        when(trelloReportService.getBoard()).thenReturn(board);
         List<TrelloLabel> labels = singletonList(trelloLabel().name("card-name").build());
-        when(trelloReportService.getLabels("board123")).thenReturn(labels);
+        when(trelloReportService.getLabels()).thenReturn(labels);
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         assertEquals(true, records.isEmpty());
@@ -78,11 +77,11 @@ public class ReportGenerationServiceTest {
         TrelloBoard board = new TrelloBoard();
         board.setCards(asList(createCard("name", "OVR", "role", "listID")));
         board.setLists(asList(createList("listID", "Test List")));
-        when(trelloReportService.getBoard("1")).thenReturn(board);
+        when(trelloReportService.getBoard()).thenReturn(board);
 
-        reportGenerationService.generateReport("1");
+        reportGenerationService.generateReport();
 
-        verify(trelloReportService).getBoard("1");
+        verify(trelloReportService).getBoard();
     }
 
     @Test
@@ -90,9 +89,9 @@ public class ReportGenerationServiceTest {
         TrelloBoard board = new TrelloBoard();
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Test List")));
-        when(trelloReportService.getBoard("1")).thenReturn(board);
+        when(trelloReportService.getBoard()).thenReturn(board);
 
-        String result = reportGenerationService.generateReport("1");
+        String result = reportGenerationService.generateReport();
 
         assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n\n\n", result);
     }
@@ -103,7 +102,7 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Kata Exercise (Polyglot)")));
 
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
@@ -117,7 +116,7 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Leadership Interview")));
 
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
@@ -131,7 +130,7 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Offer Pending")));
 
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
@@ -145,7 +144,7 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "DevOps Presentation")));
 
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
@@ -159,7 +158,7 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Fully Vetted")));
 
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
         ReportRecord cardRecord = records.get(0);
@@ -172,7 +171,7 @@ public class ReportGenerationServiceTest {
         TrelloBoard board = new TrelloBoard();
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "The Cool Exclusive List")));
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
 
         List<ReportRecord> records = reportGenerationService.generateReportRecordsFromTrelloBoard(board);
@@ -187,10 +186,10 @@ public class ReportGenerationServiceTest {
         board.setCards(asList(createCard("Joe", "OVR", "Journeyman", "123")));
         board.setLists(asList(createList("123", "Kata Exercise (Polyglot)")));
 
-        when(trelloReportService.getBoard("1")).thenReturn(board);
-        when(trelloReportService.getLabels(anyString())).thenReturn(asList(new TrelloLabel()));
+        when(trelloReportService.getBoard()).thenReturn(board);
+        when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
-        String result = reportGenerationService.generateReport("1");
+        String result = reportGenerationService.generateReport();
 
         assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n\n\n", result);
     }

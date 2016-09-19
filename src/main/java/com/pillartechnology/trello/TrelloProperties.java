@@ -22,6 +22,9 @@ public class TrelloProperties {
     private static final String APP_KEY = "ApplicationKey";
     private static final String APP_TOKEN = "ApplicationToken";
 
+    private static final String CANDIDATE_FILE_NAME = "CandidateFile";
+    private static final String SUMMARY_FILE_NAME = "SummaryFile";
+
     private Properties properties = new Properties();
     private boolean propsLoaded = false;
 
@@ -79,6 +82,14 @@ public class TrelloProperties {
 
     public String getTrelloAppToken(){
         return properties.getProperty(APP_TOKEN).trim();
+    }
+
+    public String getCandidateFileName(){
+        return properties.getProperty(CANDIDATE_FILE_NAME).trim();
+    }
+
+    public String getSummaryFileName(){
+        return properties.getProperty(SUMMARY_FILE_NAME).trim();
     }
 
     public void loadPropertiesFromFile(String propsFileName){

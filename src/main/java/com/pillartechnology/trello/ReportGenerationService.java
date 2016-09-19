@@ -21,8 +21,8 @@ class ReportGenerationService {
         trelloProps = TrelloProperties.getInstance();
     }
 
-    String generateReport(String boardId) {
-        TrelloBoard trelloBoard = trelloService.getBoard(boardId);
+    String generateReport() {
+        TrelloBoard trelloBoard = trelloService.getBoard();
         List<ReportRecord> records = generateReportRecordsFromTrelloBoard(trelloBoard);
 
         String summaryReport = recruitToHireService.convertSummaryByRoleToString(recruitToHireService.createSummaryCountsForRecords(records));
@@ -87,7 +87,7 @@ class ReportGenerationService {
     private Set<String> retrieveLabelNamesFromTrello(TrelloBoard board) {
         Set<String> labelNames = new HashSet<>();
 
-        List<TrelloLabel> labelList = trelloService.getLabels(board.getId());
+        List<TrelloLabel> labelList = trelloService.getLabels();
         labelList.forEach(label -> labelNames.add(label.getName()));
         return labelNames;
     }

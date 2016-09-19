@@ -18,18 +18,19 @@ public class ReportClient {
     }
 
     void run(String[] args) {
-        if (args.length != 3) {
-            clientOutput.println("Usage: TrelloClientReport boardId appKey appToken");
+        if (args.length != 1) {
+            clientOutput.println("Usage: TrelloClientReport propertyFile");
             return;
         }
 
-        props.loadPropertiesFromFile("TalentManagement.bak.properties");
+        props.loadPropertiesFromFile(args[0]);
+        //props.loadPropertiesFromFile("TalentManagement.bak.properties");
 
         if (reportGenerationService == null) {
             reportGenerationService = new ReportGenerationService();
         }
 
-        String reportOutput = reportGenerationService.generateReport(args[0]);
+        String reportOutput = reportGenerationService.generateReport();
         System.out.println(reportOutput);
     }
 }

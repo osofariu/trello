@@ -28,16 +28,16 @@ public class ReportClientTest {
     public void trelloCalledWithLessThanTreeArgumentsReturnsUsage() {
         reportClient.run(new String[]{});
 
-        assertEquals("Usage: TrelloClientReport boardId appKey appToken\n", buffer.toString());
+        assertEquals("Usage: TrelloClientReport propertyFile\n", buffer.toString());
     }
 
 
     @Test
     public void trelloClientShouldAcceptArgsToListBoards() {
-        when(reportGenerationService.generateReport(Mockito.any(String.class))).thenReturn("");
+        when(reportGenerationService.generateReport()).thenReturn("");
 
-        reportClient.run(new String[]{"boardId", "appKey", "appToken"});
+        reportClient.run(new String[]{"TalentManagement.properties"});
 
-        verify(reportGenerationService).generateReport("boardId");
+        verify(reportGenerationService).generateReport();
     }
 }

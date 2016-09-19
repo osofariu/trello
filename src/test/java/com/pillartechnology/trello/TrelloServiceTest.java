@@ -1,6 +1,7 @@
 package com.pillartechnology.trello;
 
 import com.pillartechnology.trello.exception.TrelloServiceException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,10 +22,19 @@ public class TrelloServiceTest {
     @Mock
     private Invocation.Builder invocationBuilder;
 
+    @Mock
+    private TrelloProperties trelloProps;
+
+    @Before
+    public void setup(){
+        when(trelloProps.getTrelloAppKey()).thenReturn("1");
+        when(trelloProps.getTrelloAppToken()).thenReturn("12");
+        when(trelloProps.getTrelloBoardId()).thenReturn("board");
+    }
 
     @Test(expected = TrelloServiceException.class)
     public void givenAnUnsuccessfulResponseFromTrelloThrowAnExceptionToAlertUser() {
         when(invocationBuilder.get()).thenReturn(Response.serverError().build());
-        trelloService.getBoard("1");
+        trelloService.getBoard();
     }
 }
