@@ -7,9 +7,7 @@ import com.pillartechnology.trello.entities.TrelloList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
@@ -36,7 +34,13 @@ public class ReportGenerationServiceTest {
     private TrelloProperties trelloProps;
 
     @Mock
-    private RecruitToHireService recruitToHireService = new RecruitToHireService();
+    private RecruitToHireService recruitToHireService;
+
+    @Mock
+    private TrelloReportWriter reportWriter;
+
+    @Captor
+    private ArgumentCaptor<String> candidateCaptor;
 
     @Before
     public void setUp() {
@@ -55,6 +59,7 @@ public class ReportGenerationServiceTest {
         when(trelloProps.getTrelloAppKey()).thenReturn("1");
         when(trelloProps.getTrelloAppToken()).thenReturn("12");
         when(trelloProps.getTrelloBoardId()).thenReturn("board");
+        when(trelloProps.getCandidateFileName()).thenReturn("fileName");
     }
 
     @Test
@@ -91,9 +96,10 @@ public class ReportGenerationServiceTest {
         board.setLists(asList(createList("123", "Test List")));
         when(trelloReportService.getBoard()).thenReturn(board);
 
-        String result = reportGenerationService.generateReport();
+        reportGenerationService.generateReport();
 
-        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n\n\n", result);
+        verify(reportWriter).writeContentToFile(candidateCaptor.capture(), Mockito.eq("fileName"));
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Test List\",\"\"\n", candidateCaptor.getValue());
     }
 
     @Test
@@ -189,9 +195,10 @@ public class ReportGenerationServiceTest {
         when(trelloReportService.getBoard()).thenReturn(board);
         when(trelloReportService.getLabels()).thenReturn(asList(new TrelloLabel()));
 
-        String result = reportGenerationService.generateReport();
+        reportGenerationService.generateReport();
 
-        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n\n\n", result);
+        verify(reportWriter).writeContentToFile(candidateCaptor.capture(), Mockito.eq("fileName"));
+        assertEquals("Name,Location,Role,ListName,Stage\n\"Joe\",\"OVR\",\"Journeyman\",\"Kata Exercise (Polyglot)\",\"Kata\"\n", candidateCaptor.getValue());
     }
 
     @Test

@@ -1,5 +1,8 @@
 package com.pillartechnology.trello;
 
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,52 +26,87 @@ public class TrelloPropertiesTest {
 
     @Test
     public void whenGettingListNamesKataStage_returnsCorrectNamesInSet() throws Exception{
-        Mockito.when(props.getProperty("KataStage")).thenReturn("Kata Exercise (Polyglot):Android/iOS Kata Exercise (ADS):Falcon Kata Exercise:DevOps Kata Exercise");
+        when(props.getProperty("KataStage")).thenReturn("Kata Exercise (Polyglot):Android/iOS Kata Exercise (ADS):Falcon Kata Exercise:DevOps Kata Exercise");
 
         Set<String> kataLists = trelloProps.getListNamesForKataStage();
 
-        Assert.assertTrue(kataLists.contains("Kata Exercise (Polyglot)"));
-        Assert.assertTrue(kataLists.contains("Android/iOS Kata Exercise (ADS)"));
-        Assert.assertTrue(kataLists.contains("Falcon Kata Exercise"));
-        Assert.assertTrue(kataLists.contains("DevOps Kata Exercise"));
+        assertTrue(kataLists.contains("Kata Exercise (Polyglot)"));
+        assertTrue(kataLists.contains("Android/iOS Kata Exercise (ADS)"));
+        assertTrue(kataLists.contains("Falcon Kata Exercise"));
+        assertTrue(kataLists.contains("DevOps Kata Exercise"));
     }
 
     @Test
     public void whenGettingListNamesPairingStage_returnsCorrectNamesInSet() throws Exception{
-        Mockito.when(props.getProperty("PairingStage")).thenReturn("DevOps Presentation:Digital Experience (XA and XD) Technical Interview:Delivery (DL, DM, DE) Technical Interview:Pairing Session");
+        when(props.getProperty("PairingStage")).thenReturn("DevOps Presentation:Digital Experience (XA and XD) Technical Interview:Delivery (DL, DM, DE) Technical Interview:Pairing Session");
 
         Set<String> pairingLists = trelloProps.getListNamesForPairingStage();
 
-        Assert.assertTrue(pairingLists.contains("DevOps Presentation"));
-        Assert.assertTrue(pairingLists.contains("Digital Experience (XA and XD) Technical Interview"));
-        Assert.assertTrue(pairingLists.contains("Delivery (DL, DM, DE) Technical Interview"));
-        Assert.assertTrue(pairingLists.contains("Pairing Session"));
+        assertTrue(pairingLists.contains("DevOps Presentation"));
+        assertTrue(pairingLists.contains("Digital Experience (XA and XD) Technical Interview"));
+        assertTrue(pairingLists.contains("Delivery (DL, DM, DE) Technical Interview"));
+        assertTrue(pairingLists.contains("Pairing Session"));
     }
 
     @Test
     public void whenGettingListNamesLeadershipStage_returnsCorrectNamesInSet() throws Exception {
-        Mockito.when(props.getProperty("LeadershipStage")).thenReturn("Leadership Interview");
+        when(props.getProperty("LeadershipStage")).thenReturn("Leadership Interview");
 
         Set<String> leadershipLists = trelloProps.getListNamesForLeadershipStage();
 
-        Assert.assertTrue(leadershipLists.contains("Leadership Interview"));
+        assertTrue(leadershipLists.contains("Leadership Interview"));
     }
 
     @Test
     public void whenGettingListNamesFullyVettedStage_returnsCorrectNamesInSet() throws Exception {
-        Mockito.when(props.getProperty("FullyVettedStage")).thenReturn("Fully Vetted");
+        when(props.getProperty("FullyVettedStage")).thenReturn("Fully Vetted");
 
         Set<String> vettedLists = trelloProps.getListNamesForVettedStage();
 
-        Assert.assertTrue(vettedLists.contains("Fully Vetted"));
+        assertTrue(vettedLists.contains("Fully Vetted"));
     }
 
     @Test
     public void whenGettingListNamesOfferStage_returnsCorrectNamesInSet() throws Exception {
-        Mockito.when(props.getProperty("OfferPendingStage")).thenReturn("Offer Pending");
+        when(props.getProperty("OfferPendingStage")).thenReturn("Offer Pending");
 
         Set<String> offerLists = trelloProps.getListNamesForOfferPendingStage();
 
-        Assert.assertTrue(offerLists.contains("Offer Pending"));
+        assertTrue(offerLists.contains("Offer Pending"));
+    }
+    
+    @Test
+    public void whenGettingTrelloBoardId_returnsTheCorrectProperty(){
+        when(props.getProperty("BoardID")).thenReturn("BoardID");
+
+        assertEquals("BoardID", trelloProps.getTrelloBoardId());
+    }
+
+    @Test
+    public void whenGettingTrelloAppKey_returnsTheCorrectProperty(){
+        when(props.getProperty("ApplicationKey")).thenReturn("AppKey");
+
+        assertEquals("AppKey", trelloProps.getTrelloAppKey());
+    }
+
+    @Test
+    public void whenGettingTrelloAppToken_returnsTheCorrectProperty(){
+        when(props.getProperty("ApplicationToken")).thenReturn("AppToken");
+
+        assertEquals("AppToken", trelloProps.getTrelloAppToken());
+    }
+
+    @Test
+    public void whenGettingSummaryFileName_returnsTheCorrectProperty(){
+        when(props.getProperty("CandidateFile")).thenReturn("candidateFile");
+
+        assertEquals("candidateFile", trelloProps.getCandidateFileName());
+    }
+
+    @Test
+    public void whenGettingCandidateFileName_returnsTheCorrectProperty(){
+        when(props.getProperty("SummaryFile")).thenReturn("file");
+
+        assertEquals("file", trelloProps.getSummaryFileName());
     }
 }

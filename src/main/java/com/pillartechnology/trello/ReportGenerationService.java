@@ -2,10 +2,7 @@ package com.pillartechnology.trello;
 
 import static com.pillartechnology.trello.Stages.*;
 
-import com.pillartechnology.trello.entities.TalentStages;
-import com.pillartechnology.trello.entities.TrelloBoard;
-import com.pillartechnology.trello.entities.TrelloCard;
-import com.pillartechnology.trello.entities.TrelloLabel;
+import com.pillartechnology.trello.entities.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,19 +12,24 @@ class ReportGenerationService {
     TrelloService trelloService;
     TrelloProperties trelloProps;
     RecruitToHireService recruitToHireService = new RecruitToHireService();
+    TrelloReportWriter reportWriter = new TrelloReportWriter();
 
     public ReportGenerationService() {
         trelloService = new TrelloService();
         trelloProps = TrelloProperties.getInstance();
     }
 
-    String generateReport() {
+    public void generateReport() {
         TrelloBoard trelloBoard = trelloService.getBoard();
         List<ReportRecord> records = generateReportRecordsFromTrelloBoard(trelloBoard);
 
-        String summaryReport = recruitToHireService.convertSummaryByRoleToString(recruitToHireService.createSummaryCountsForRecords(records));
+        reportWriter.writeContentToFile(generateCandidateSummaryFromRecords(records), trelloProps.getSummaryFileName());
+        reportWriter.writeContentToFile(generateOutputFromRecords(records), trelloProps.getCandidateFileName());
+    }
 
-        return generateOutputFromRecords(records) + "\n\n" + summaryReport;
+    private String generateCandidateSummaryFromRecords(List<ReportRecord> records) {
+        Map<RoleLocation, SummaryCount> summaryCountsForRecords = recruitToHireService.createSummaryCountsForRecords(records);
+        return recruitToHireService.convertSummaryByRoleToString(summaryCountsForRecords);
     }
 
     List<ReportRecord> generateReportRecordsFromTrelloBoard(TrelloBoard board) {

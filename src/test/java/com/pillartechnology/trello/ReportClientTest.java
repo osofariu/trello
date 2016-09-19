@@ -34,7 +34,6 @@ public class ReportClientTest {
 
     @Test
     public void trelloClientShouldAcceptArgsToListBoards() {
-        when(reportGenerationService.generateReport()).thenReturn("");
 
         reportClient.run(new String[]{"TalentManagement.properties"});
 

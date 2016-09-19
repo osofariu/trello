@@ -30,7 +30,6 @@ public class ReportClient {
             reportGenerationService = new ReportGenerationService();
         }
 
-        String reportOutput = reportGenerationService.generateReport();
-        System.out.println(reportOutput);
+        reportGenerationService.generateReport();
     }
 }
